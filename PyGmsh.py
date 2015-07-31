@@ -3,7 +3,7 @@ import numpy as np
 class PyGmsh:
     """Gmsh wrapper.
        Some ideas are taken from python4gmsh by nschloe
-       https://github.com/nschloe/python4gmsh/tree/master/python4gmsh"""
+       https://github.com/nschloe"""
 
     global _id_Points 
     global _id_Lines 

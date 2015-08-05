@@ -3,7 +3,7 @@ import numpy as np
 class PyGmsh:
     """Gmsh wrapper.
        Some ideas are taken from python4gmsh by nschloe
-       https://github.com/nschloe"""
+       https://github.com/nschloe/python4gmsh/tree/master/python4gmsh"""
 
     global _id_Points 
     global _id_Lines 
@@ -196,7 +196,7 @@ class PyGmsh:
 #
 #-----------------------------------------------------------------------
 #
-    def write_code(self,fname='untitled.geo'):
+    def write_code(self,fname):
         """Writes the mesh in gmsh geo format."""
         geo_code = [""]
         
@@ -226,6 +226,9 @@ out[] = Extrude {0, 0, 1.0} {
         for phys in self.Physicals:
             geo_code.append(phys.code())        
 
+        if fname=='':
+            fname = 'untitled.geo'
+            
         geo_file = open(fname, "w")
         geo_file.write(''.join(geo_code))
         geo_file.close()

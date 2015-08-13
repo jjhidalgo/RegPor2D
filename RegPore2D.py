@@ -282,22 +282,21 @@ class RegPore2D:
 #
 #-----------------------------------------------------------------------
 #
-    def write_mesh(self,fname='untitled.geo',meshtype='gmsh'):
+    def write_mesh(self,fname='',meshtype='gmsh'):
         """ Writes the porus media for the mesh/cad program"""
-        meshes = {'gmsh':self.__writeGMSH__,'scad':self.__writeSCAD__}
-        try:
-            meshes[meshtype](fname)
-        except:
-            print("Unknown meshtype")
-            
+        meshes = {'gmsh':self.__writeGMSH__,'oscad':self.__writeOPENSCAD__}
 
-        #self.__writeGMSH__(fname)
+        #import pdb; pdb.set_trace()
+        #try:
+        meshes[meshtype](fname)
+        #except:
+        #print("Unknown meshtype")
 
 
 #
 #-----------------------------------------------------------------------
 #
-    def __writeGMSH__(self,fname='untitled.geo'):
+    def __writeGMSH__(self,fname):
         """Writes the discs packing for gmsh"""
 
         import PyGmsh as gmsh
@@ -325,10 +324,24 @@ class RegPore2D:
 #
 #-----------------------------------------------------------------------
 #
-    def __writeSCAD__(self,fname='untitled.scad'):
-        """Writes the discs packing for SCAD"""
+    def __writeOPENSCAD__(self,fname):
+        """Writes the discs packing for OpenSCAD"""
         
-        print("Not implemented yet!")
+        import PyOpenSCAD as oscad
+
+        z = CONST_ZETA
+
+        mesh = oscad.PyOpenSCAD()
+
+
+        for circ in self.circles:
+
+            center = (circ['x'],circ['y'],circ['z'])
+            r = circ['r']
+            mesh.add_cylinder(z,r,center)
+
+
+        mesh.write_code(fname)
 #
 #-----------------------------------------------------------------------
 # END class RegPore2D

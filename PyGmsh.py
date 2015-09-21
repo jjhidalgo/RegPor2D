@@ -5,9 +5,9 @@ class PyGmsh:
        Some ideas are taken from python4gmsh by nschloe
        https://github.com/nschloe/python4gmsh/tree/master/python4gmsh"""
 
-    global _id_Points 
-    global _id_Lines 
-    global _id_LineLoops 
+    global _id_Points
+    global _id_Lines
+    global _id_LineLoops
     global _id_PlaneSurfaces
     global _id_Physicals
     _id_Points = 0
@@ -20,7 +20,7 @@ class PyGmsh:
 #
     def __init__(self):
         """Just creates empty arrays"""
-        
+
         self.Points = []
         self.Lines = []
         self.LineLoops = []
@@ -64,7 +64,7 @@ class PyGmsh:
         x = center.x + dx
         y = center.y + dy
         p1= self.add_point(x,y,z,size)
-        
+
         x = center.x - dx
         y = center.y + dy
         p2 = self.add_point(x,y,z,size)
@@ -75,7 +75,7 @@ class PyGmsh:
 
         x = center.x + dx
         y = center.y - dy
-        p4 = self.add_point(x,y,z,size)        
+        p4 = self.add_point(x,y,z,size)
 
         center_id = center.point_id
         p1_id  = p1.point_id
@@ -97,16 +97,16 @@ class PyGmsh:
             self.add_physical("grains",lineloop.lineloop_id,'surf')
         else:
             grain_phys.add_lineloop(lineloop.lineloop_id)
-        
-        
+
+
         return
 #
 #-----------------------------------------------------------------------
 #
     def add_line(self,p_ids,linetype='line'):
         """Adds one line to the mesh."""
-        
-        from PyGmsh import gmshLine as gl        
+
+        from PyGmsh import gmshLine as gl
         global _id_Lines
 
         _id_Lines = _id_Lines + 1
@@ -120,7 +120,7 @@ class PyGmsh:
     def add_lineloop(self,line_ids):
         """Adds one line loop to the mesh.
            The line loop is added to the plane surface list."""
-        
+
         from PyGmsh import gmshLineLoop as gll
         from PyGmsh import gmshPlaneSurface as gps
         global _id_LineLoops
@@ -144,7 +144,7 @@ class PyGmsh:
 #
     def add_physical(self,name,ids,phystype):
         """ Adds a physical surface to the mesh."""
-        
+
         global _id_Physicals
         _id_Physicals = _id_Physicals + 1
 
@@ -159,7 +159,7 @@ class PyGmsh:
 #
     def find_physical(self, name):
         """ Returns id of the physical surface called name"""
-        
+
         phys_out = None
         for phys in self.Physicals:
             if phys.name  == name:
@@ -170,9 +170,9 @@ class PyGmsh:
 #-----------------------------------------------------------------------
 #
     def add_BoundingBox(self,xmin,xmax,ymin,ymax,z,size):
-        """Adds the points, lines, line loops, 
+        """Adds the points, lines, line loops,
            and physical surfaces of the bounding box."""
-        
+
         p1 = self.add_point(xmin,ymin,z,size)
         p2 = self.add_point(xmax,ymin,z,size)
         p3 = self.add_point(xmax,ymax,z,size)
@@ -182,7 +182,7 @@ class PyGmsh:
         l2 = self.add_line((p2.point_id,p3.point_id),linetype='line')
         l3 = self.add_line((p3.point_id,p4.point_id),linetype='line')
         l4 = self.add_line((p4.point_id,p1.point_id),linetype='line')
-        
+
         lineloop = self.add_lineloop((-l3.line_id,-l2.line_id
                            ,-l1.line_id,-l4.line_id))
 
@@ -199,9 +199,9 @@ class PyGmsh:
     def write_code(self,fname):
         """Writes the mesh in gmsh geo format."""
         geo_code = [""]
-        
+
         for point in self.Points:
-            
+
             geo_code.append(point.code())
 
         for line in self.Lines:
@@ -224,11 +224,11 @@ out[] = Extrude {0, 0, 1.0} {
         geo_code.append(auxcode)
 
         for phys in self.Physicals:
-            geo_code.append(phys.code())        
+            geo_code.append(phys.code())
 
         if fname=='':
             fname = 'untitled.geo'
-            
+
         geo_file = open(fname, "w")
         geo_file.write(''.join(geo_code))
         geo_file.close()
@@ -246,7 +246,7 @@ class gmshPoint:
 #
     def __init__(self,point_id,x,y,z,size):
         """Creates a point."""
-        
+
         self.point_id = point_id
         self.x = x
         self.y = y
@@ -276,7 +276,7 @@ class gmshLine:
 #
     def __init__(self,line_id,points_ids,linetype):
         """Creates a line with the given points."""
-        
+
         self.line_id = line_id
         self.ids = points_ids
         self.linetype = linetype
@@ -285,7 +285,7 @@ class gmshLine:
 #
     def code(self):
         """Returns the code for a line in gmsh format."""
-        
+
         strids = ','.join(map(str,self.ids))
         if self.linetype=='line':
             line_code = 'Line({:d}) = {{{}}};'.format(self.line_id,strids)
@@ -307,7 +307,7 @@ class gmshLineLoop:
 #
     def __init__(self,lineloop_id,lines_ids):
         """Creates a line loop with the given lines."""
-        
+
         self.lineloop_id = lineloop_id
         self.ids = lines_ids
 #
@@ -315,7 +315,7 @@ class gmshLineLoop:
 #
     def code(self):
         """Returns the code for a line loop in gmsh format."""
-        
+
         strids = ','.join(map(str,self.ids))
         lineloop_code = 'Line Loop({:d}) = {{{}}};'.format(
                                                 self.lineloop_id,strids)
@@ -335,7 +335,7 @@ class gmshPlaneSurface:
 #
     def __init__(self,planesurface_id,lineloops_ids):
         """Creates a plane surface with the given line loops."""
-        
+
         self.planesurface_id = planesurface_id
         self.ids = []
         self.ids.append(lineloops_ids)
@@ -351,7 +351,7 @@ class gmshPlaneSurface:
 #
     def code(self):
         """Returns the code for a plane surface in gmsh format."""
-        
+
         strids = ','.join(map(str,self.ids))
         planesurface_code = 'Plane Surface({:d}) = {{{}}};'.format(
                                                 self.planesurface_id,strids)
@@ -363,14 +363,14 @@ class gmshPlaneSurface:
 #-----------------------------------------------------------------------
 #
 class gmshPhysical:
-        """This class creates and writes code for physical
+    """This class creates and writes code for physical
            surfaces in gmsh format."""
 #
 #-----------------------------------------------------------------------
 #
     def __init__(self,physical_id,name,lineloops_ids,phystype):
         """Creates a physical surface for the given lineloops"""
-        
+
         self.physical_id = physical_id
         self.name = name
         self.phystype = phystype #surf, vol
@@ -380,8 +380,8 @@ class gmshPhysical:
 #-----------------------------------------------------------------------
 #
     def add_lineloop(self,lineloops_ids):
-       """Adds line loops to the physical surface"""
-       
+        """Adds line loops to the physical surface"""
+
         self.ids.append(lineloops_ids)
 #
 #-----------------------------------------------------------------------
@@ -406,7 +406,7 @@ class gmshPhysical:
 
             physical_code = 'Physical Volume("{:s}") = {{{}}};'.format(
                                                      self.name, outs)
-        
+
         return physical_code + '\n'
 #
 #-----------------------------------------------------------------------

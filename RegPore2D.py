@@ -337,13 +337,7 @@ class RegPore2D(object):
         """ Writes the porus media for the mesh/cad program"""
         meshes = {'gmsh':self.__writeGMSH__, 'oscad':self.__writeOPENSCAD__}
 
-        #import pdb; pdb.set_trace()
-        #try:
         meshes[meshtype](fname)
-        #except:
-        #print("Unknown meshtype")
-
-
 #
 #-----------------------------------------------------------------------
 #
@@ -361,7 +355,7 @@ class RegPore2D(object):
         ymax = np.max(self.circles[:]['y'] + self.circles[:]['r']) + self.throat
         z = CONST_ZETA
         size = ymax/10.
-        #import pdb; pdb.set_trace()
+
         mesh.add_BoundingBox(xmin, xmax, ymin, ymax, z, size)
 
         for circ in self.circles:

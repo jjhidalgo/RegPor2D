@@ -1,5 +1,7 @@
 *.pyc
 *.geo
 *.scad
+*.msh
 *~
+
 

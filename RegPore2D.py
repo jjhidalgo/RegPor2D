@@ -174,7 +174,7 @@ class RegPore2D(object):
 
         circles = np.zeros(self.ngrains, \
             dtype={'names':['x', 'y', 'z', 'r'], \
-            'formats':['f4', 'f4', 'f4', 'f4']})
+            'formats':['float64', 'float64', 'float64', 'float64']})
 
 
         circles[:]['x'] = xi.repeat(self.ny) + self.xoffset
@@ -208,9 +208,9 @@ class RegPore2D(object):
         xrep[::2] = self.ny*xrep[::2] #odd
         xrep[1::2] = (self.ny-1)*xrep[1::2] #even
 
-        circles = np.zeros(self.ngrains,
-                           dtype={'names':['x', 'y', 'z', 'r'],
-                                  'formats':['f4', 'f4', 'f4', 'f4']})
+        circles = np.zeros(self.ngrains, \
+            dtype={'names':['x', 'y', 'z', 'r'], \
+            'formats':['float64', 'float64', 'float64', 'float64']})
 
 
         circles[:]['x'] = xi.repeat(xrep) + self.xoffset
@@ -239,7 +239,7 @@ class RegPore2D(object):
 
         circles = np.zeros(self.ngrains, \
             dtype={'names':['x', 'y', 'z', 'r'], \
-            'formats':['f4', 'f4', 'f4', 'f4']})
+            'formats':['float64', 'float64', 'float64', 'float64']})
 
 
         circles[:]['x'] = xi.repeat(self.ny) + self.xoffset
@@ -271,7 +271,7 @@ class RegPore2D(object):
 
         newcircles = np.zeros(new_pore.ngrains, \
             dtype={'names':['x', 'y', 'z', 'r'], \
-            'formats':['f4', 'f4', 'f4', 'f4']})
+            'formats':['float64', 'float64', 'float64', 'float64']})
 
         newcircles[:]['x'] = np.concatenate((self.circles['x'], \
                                             other.circles['x']), axis=0)

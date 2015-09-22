@@ -4,7 +4,7 @@ class PoreError(Exception):
     """Base class for exceptions in this module."""
     def __init__(self):
         """ Does nothing"""
-        Exception.__init__()
+        Exception.__init__(self)
 
 class ErrorPacking(PoreError):
     """Exception raised for errors in the packing.
@@ -16,7 +16,7 @@ class ErrorPacking(PoreError):
     """
     def __init__(self):
         """Just prints the error message"""
-        PoreError.__init__()
+        PoreError.__init__(self)
         print "Wrong packing!"
 
 class ErrorNx(PoreError):
@@ -25,7 +25,7 @@ class ErrorNx(PoreError):
 
     def __init__(self):
         """Just prints the error message"""
-        PoreError.__init__()
+        PoreError.__init__(self)
         msg = "Number of grains in x direction too small, negative,"
         msg = msg + "or even with tri and etri packings!"
         print msg
@@ -35,7 +35,7 @@ class ErrorNy(PoreError):
 
     def __init__(self):
         """Just prints the error message"""
-        PoreError.__init__()
+        PoreError.__init__(self)
         print "Number of grains in y direction too small or negative!"
 
 class ErrorRadius(PoreError):
@@ -43,7 +43,7 @@ class ErrorRadius(PoreError):
 
     def __init__(self):
         """Just prints the error message"""
-        PoreError.__init__()
+        PoreError.__init__(self)
         print "Grain radius too small or negative!"
 
 class ErrorThroatNegative(PoreError):
@@ -51,7 +51,7 @@ class ErrorThroatNegative(PoreError):
 
     def __init__(self):
         """Just prints the error message"""
-        PoreError.__init__()
+        PoreError.__init__(self)
         print "Pore throat negative! Check number of grains in y and radius."
 
 class ErrorNotPorousMedium(PoreError):
@@ -59,7 +59,7 @@ class ErrorNotPorousMedium(PoreError):
 
     def __init__(self):
         """Just prints the error message"""
-        PoreError.__init__()
+        PoreError.__init__(self)
         msg = "A porous medium (instance of RegPore2D"
         msg = msg + " is needed for this operation."
         print msg

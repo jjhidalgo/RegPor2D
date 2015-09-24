@@ -3,5 +3,8 @@
 *.scad
 *.msh
 *~
+debugr.pos
+debugp.pos
+
 
 

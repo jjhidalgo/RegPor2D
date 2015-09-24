@@ -86,10 +86,15 @@ class PyGmsh(object):
             arc3.line_id, arc4.line_id))
 
         grain_phys = self.find_physical("grains")
+        #import pdb; pdb.set_trace()
+
+        ids = [line_id + 1 for line_id in lineloop.ids]
+
         if grain_phys == None:
-            self.add_physical("grains", lineloop.lineloop_id, 'surf')
+            self.add_physical("grains", ids, 'surf')
+
         else:
-            grain_phys.add_lineloop(lineloop.lineloop_id)
+            grain_phys.add_lineloop(ids)
 
 
         return
@@ -175,12 +180,12 @@ class PyGmsh(object):
         lineloop = self.add_lineloop((-l3.line_id, -l2.line_id, \
             -l1.line_id, -l4.line_id))
 
-        physsurf = self.add_physical('front', 0, 'surf')
-        physsurf = self.add_physical('internal', 1, 'vol')
-        physsurf = self.add_physical('top', 2, 'surf')
-        physsurf = self.add_physical('right', 3, 'surf')
-        physsurf = self.add_physical('bottom', 4, 'surf')
-        physsurf = self.add_physical('left', 5, 'surf')
+        physsurf = self.add_physical('front', [0], 'surf')
+        physsurf = self.add_physical('internal', [1], 'vol')
+        physsurf = self.add_physical('top', [2], 'surf')
+        physsurf = self.add_physical('right', [3], 'surf')
+        physsurf = self.add_physical('bottom', [4], 'surf')
+        physsurf = self.add_physical('left', [5], 'surf')
 
 #
 #-----------------------------------------------------------------------
@@ -214,6 +219,13 @@ out[] = Extrude {0,  0,  1.0} {
 
         for phys in self.Physicals:
             geo_code.append(phys.code())
+
+# The physical surface for the back of the box corresponds to
+# plane surface 1 (it does not fit in the Physicals object
+# which is assumed to be composed of lineloops).
+
+        auxcode = "Physical Surface(\"back\") = {1};\n"
+        geo_code.append(auxcode)
 
         if fname == '':
             fname = 'untitled.geo'
@@ -364,14 +376,14 @@ class gmshPhysical(object):
         self.name = name
         self.phystype = phystype #surf,  vol
         self.ids = []
-        self.ids.append(lineloops_ids)
+        self.ids.extend(lineloops_ids)
 #
 #-----------------------------------------------------------------------
 #
     def add_lineloop(self, lineloops_ids):
         """Adds line loops to the physical surface"""
 
-        self.ids.append(lineloops_ids)
+        self.ids.extend(lineloops_ids)
 #
 #-----------------------------------------------------------------------
 #

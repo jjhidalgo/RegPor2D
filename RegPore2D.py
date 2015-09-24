@@ -55,6 +55,9 @@ class RegPore2D(object):
         self.Lx = self.__compute_lx__()
 
         self.ngrains = self.__ngrains__()
+
+        self.size = 0.8*self.throat
+
         self.generate_packing()
 
 #
@@ -140,6 +143,16 @@ class RegPore2D(object):
 
         throat = (self.ly - (2.0*self.ny*self.radius))/(self.ny + 1)
         return throat
+#
+#-----------------------------------------------------------------------
+#
+    def set_size(self, size):
+        """Sets mesh size and generares packing, again."""
+        #TO DO: check input argument. Allow a general
+        # expression using, x, y, r.
+
+        self.size = size
+        self.generate_packing()
 
 #
 #-----------------------------------------------------------------------
@@ -287,6 +300,7 @@ class RegPore2D(object):
 
         new_pore.circles = newcircles
         new_pore.throat = min([self.throat, other.throat])
+        new_pore.size = min([self.size, other.size])
 
         return new_pore
 #
@@ -354,7 +368,7 @@ class RegPore2D(object):
         ymin = np.min(self.circles[:]['y'] - self.circles[:]['r']) - self.throat
         ymax = np.max(self.circles[:]['y'] + self.circles[:]['r']) + self.throat
         z = CONST_ZETA
-        size = ymax/10.
+        size = self.size
 
         mesh.add_BoundingBox(xmin, xmax, ymin, ymax, z, size)
 
@@ -362,8 +376,7 @@ class RegPore2D(object):
 
             center = (circ['x'], circ['y'], circ['z'])
             r = circ['r']
-            mesh.add_circle(center, r, r/10.)
-
+            mesh.add_circle(center, r, size)
 
         mesh.write_code(fname)
 #

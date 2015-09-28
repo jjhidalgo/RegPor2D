@@ -51,9 +51,11 @@ class PyOpenSCAD(object):
 #
 #-----------------------------------------------------------------------
 #
-    def write_code(self, fname):
+    def write_code(self, fname, min_resolution=0.01, min_angle=0.01, nfacets=0):
         """Writes the mesh in OpenScad format."""
-        oscad_code = [""]
+        oscad_code = [ \
+            "$fs = {:.4f};\n$fa = {:.4f};\n$fn = {:d};\n".format(min_resolution,min_angle,nfacets) \
+                ]
 
         for sphere in self.spheres:
 

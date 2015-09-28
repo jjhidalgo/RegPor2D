@@ -17,7 +17,7 @@ class ErrorPacking(PoreError):
     def __init__(self):
         """Just prints the error message"""
         PoreError.__init__(self)
-        print "Wrong packing!"
+        print("Wrong packing!")
 
 class ErrorNx(PoreError):
     """Exception raised for nx!
@@ -28,7 +28,7 @@ class ErrorNx(PoreError):
         PoreError.__init__(self)
         msg = "Number of grains in x direction too small, negative,"
         msg = msg + "or even with tri and etri packings!"
-        print msg
+        print(msg)
 
 class ErrorNy(PoreError):
     """Exception raised for ny<1  or nx*radius>1.0!"""
@@ -36,7 +36,7 @@ class ErrorNy(PoreError):
     def __init__(self):
         """Just prints the error message"""
         PoreError.__init__(self)
-        print "Number of grains in y direction too small or negative!"
+        print("Number of grains in y direction too small or negative!")
 
 class ErrorRadius(PoreError):
     """Exception raised for grain radius. Raduis <1e-9 or Radius >1"""
@@ -44,7 +44,7 @@ class ErrorRadius(PoreError):
     def __init__(self):
         """Just prints the error message"""
         PoreError.__init__(self)
-        print "Grain radius too small or negative!"
+        print("Grain radius too small or negative!")
 
 class ErrorThroatNegative(PoreError):
     """Exception raised for pore throat. Pore throat is negative"""
@@ -52,7 +52,7 @@ class ErrorThroatNegative(PoreError):
     def __init__(self):
         """Just prints the error message"""
         PoreError.__init__(self)
-        print "Pore throat negative! Check number of grains in y and radius."
+        print("Pore throat negative! Check number of grains in y and radius.")
 
 class ErrorNotPorousMedium(PoreError):
     """Exception when an variable is not an instance of RegPore2D."""
@@ -62,4 +62,4 @@ class ErrorNotPorousMedium(PoreError):
         PoreError.__init__(self)
         msg = "A porous medium (instance of RegPore2D"
         msg = msg + " is needed for this operation."
-        print msg
+        print(msg)

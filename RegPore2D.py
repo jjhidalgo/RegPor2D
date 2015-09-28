@@ -111,7 +111,7 @@ class RegPore2D(object):
     def check_radius(self, radius):
         """Checks if the grain radius is greater than 1.0e-9"""
 
-        if radius > 1.0e-9 and self.radius < self.ly:
+        if radius > 1.0e-9 and radius < self.ly:
             radius_ok = True
         else:
             radius_ok = False
@@ -225,9 +225,8 @@ class RegPore2D(object):
             dtype={'names':['x', 'y', 'z', 'r'], \
             'formats':['float64', 'float64', 'float64', 'float64']})
 
-
         circles[:]['x'] = xi.repeat(xrep) + self.xoffset
-        circles[:]['y'] = np.hstack((np.tile(yj, self.nx/2), yj_odd))
+        circles[:]['y'] = np.hstack((np.tile(yj, self.nx//2), yj_odd))
         circles[:]['z'] = np.tile(CONST_ZETA, self.ngrains)
         circles[:]['r'] = np.tile(self.radius, self.ngrains)
 
@@ -314,7 +313,7 @@ class RegPore2D(object):
             ngrains = self.nx*self.ny
 
         else:
-            ngrains = (self.nx/2)*(self.ny-1)+ (self.nx/2+1)*(self.ny)
+            ngrains = (self.nx//2)*(self.ny-1)+ (self.nx//2+1)*(self.ny)
 
         return ngrains
 

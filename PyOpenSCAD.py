@@ -51,14 +51,13 @@ class PyOpenSCAD(object):
 #
 #-----------------------------------------------------------------------
 #
-    def write_code(self, fname, min_resolution=0.01, min_angle=0.01, nfacets=0):
+    def write_code(self, fname, min_resolution=0.01, min_angle=40, nfacets=0):
         """Writes the mesh in OpenScad format."""
         oscad_code = [ \
             "$fs = {:.4f};\n$fa = {:.4f};\n$fn = {:d};\n".format(min_resolution,min_angle,nfacets) \
                 ]
 
         for sphere in self.spheres:
-
             oscad_code.append(sphere.code())
 
         for cylinder in self.cylinders:
@@ -89,6 +88,7 @@ class OpenScadObject(object):
     def __init__(self):
         """To be redefined in children."""
         self.center = None
+        self.scaling = None
 
 #
 #-----------------------------------------------------------------------
@@ -105,8 +105,20 @@ class OpenScadObject(object):
 
         center = ','.join(map(str, self.center))
 
-        code = 'translate([{:}])'.format(center)
-        code += code_in
+        code = 'translate([{:}]){{{:};}}'.format(center,code_in)
+
+        return code
+
+
+#
+#-----------------------------------------------------------------------
+#
+    def scale_code(self, code_in):
+        """Wrapps code in a translate environment."""
+
+        scaling = ','.join(map(str, self.scaling))
+
+        code = 'scale([{:}]){{{:};}}'.format(scaling,code_in)
 
         return code
 

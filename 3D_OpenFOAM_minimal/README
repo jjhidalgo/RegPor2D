@@ -1,0 +1,8 @@
+download Matteo's code at
+git clone https://micardi@bitbucket.org/micardi/porescalemc.git
+add the subfolder code to PYTHONPATH
+copy the folder template/NavierStokesOF in your working dir
+run python3 run.py
+
+
+PS: you need to have openscad, openfoam and python3 installed
